@@ -13,6 +13,9 @@ vid.onpause = () => { vid.style.opacity = 0 };
 vid.parentNode.onclick = () => vid.paused ? vid.play() : vid.pause()
 const im_path = './imgs/'
 
+// Make sure to modify this for each layer.
+const customized_lowest_layer = 'nuntinee-theme';
+
 const totalVideoDuration = chapters.reduce((accumulator, chapter) => {
   if (chapter.video) {
     return accumulator + parseFloat(chapter.video.duration);
@@ -151,15 +154,39 @@ chapters.forEach((record, idx) => {
   const container = document.createElement('div');
   const chapter = document.createElement('div');
 
+  // if videoTime is present, convert that to videoSeconds for processing.
+  // our researcher might use videoTime since it is a more readable format.
+  if (record.videoTime) {
+    let splitted = record.videoTime.split(':');
+    let seconds = 0;
+    for (let i = 0; i < splitted.length; i++) {
+      seconds = seconds * 60 + parseInt(splitted[i]);
+    }
+    record.videoSeconds = seconds.toString();
+    console.log('seconds', seconds);
+  }
+  
+  // add chapter icon (changes in streetscape icon) if specified.
+  if (record.icon) {
+    const icon = document.createElement('img');
+    icon.setAttribute('id', 'icon')
+    icon.setAttribute('src', 'icons/icon-' + record.icon + '.png');
+    icon.setAttribute('width', '50');
+    // icon.setAttribute('height', '60');
+    chapter.appendChild(icon);
+  }
+  
   if (record.title) {
     const title = document.createElement('h3');
     title.innerText = record.title;
     chapter.appendChild(title);
   }
 
+  // Put image before description.
   if (record.image) {
-    const image = new Image();
+    let image = new Image();
     image.src = record.image;
+    console.log('image created');
     chapter.appendChild(image);
   }
 
@@ -169,13 +196,37 @@ chapters.forEach((record, idx) => {
     chapter.appendChild(story);
   }
 
+  // Put image1,2,etc after description.
+  if (record.image1) {
+    let image1 = new Image();
+    image1.src = record.image1;
+    console.log('image 1 created');
+    chapter.appendChild(image1);
+  }
+  if (record.image2) {
+    const image = new Image();
+    image.src = record.image2;
+    chapter.appendChild(image);
+  }
+
   container.setAttribute('id', record.id);
   container.classList.add('step');
   if (idx === 0) {
     container.classList.add('active');
   }
+  
+  // chapter.getElementsByClassName('icon-1').opacity = 1;
+  // add chapter theme color (changes in lifestyle color) if specified.
+  // such as theme_1 theme_2 theme_3 etc. Refer to here
+  // https://docs.google.com/document/d/12QbPAxiGRh20ibKLWhLSZ5IvAptPLYuwBznxjBg3fPQ/edit
+  if (record.theme) {
+    chapter.classList.add('theme_' + record.theme);
 
-  chapter.classList.add(config.theme);
+  // default to the overall config theme.
+  } else {
+    chapter.classList.add(config.theme);
+  }
+
   container.appendChild(chapter);
   features.appendChild(container);
 });
@@ -255,13 +306,19 @@ map.on('load', () => {
     source: 'lineSource',
     paint: {
       'line-opacity': 0,
-      'line-color': 'rgb(255, 255, 0)',
+      'line-color': 'rgb(0, 0, 0)',
       'line-width': 4.5,
     },
     layout: {
       visibility: 'none',
     },
-  });
+
+  // This is the lowest layer in mapbox that is customized by us.
+  // This way the animated line and point will appear below them.
+  }, customized_lowest_layer
+);
+
+  // map.moveLayer('animatedLine');
 
   map.addLayer({
     id: 'animatedPoint',
@@ -270,12 +327,16 @@ map.on('load', () => {
     paint: {
       'circle-radius': 6.5,
       'circle-opacity': 0,
-      'circle-color': 'rgb(255, 255, 0)',
+      'circle-color': 'rgb(0, 0, 0)',
     },
     layout: {
       // 'visibility': 'none'
     },
-  });
+
+  // This is the lowest layer in mapbox that is customized by us.
+  // This way the animated line and point will appear below them.
+  }, customized_lowest_layer
+);
 
   // setup the instance, pass callback functions
   scroller

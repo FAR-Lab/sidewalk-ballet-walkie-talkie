@@ -15,12 +15,26 @@
 
 </div>
 <div id="map"></div>
-
+<div id="legend">
+    <button onclick="toggleLegendView()">Legend</button>
+    <div></div>
+    <img id="legendimg" src="https://raw.githubusercontent.com/HarrisonJYU/Sidewalk-Ballet/521979f9d581e658f547c2f404112597f05b9f57/photo/legend.svg" />
+</div>
 
 
 <div id="story"></div>
 
 <script src="./index.js"></script>
+<script>
 
+    function toggleLegendView() {
+    var x = document.getElementById("legendimg");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+    }
+</script>
 </body>
 </html>

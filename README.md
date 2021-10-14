@@ -32,6 +32,7 @@ https://parceljs.org/getting_started.html
 1b. optionally, create your own visuals to further the storytelling (recommended)
 * Use [map position helper](https://demos.mapbox.com/location-helper/) to generate location visualizing parameters, e.g. location.center (lon and lat).
 * Follow guidance to create your own "style" on Mapbox on either given data, your created data, or your uploaded data (dataset or tileset), e.g. [.onChapterEnter] layer: park-slope opacity: 1
+* customized_lowest_layer
 
 1c. Prepare config and execute
 * Make sure that the configs at the end of the Google Doc is correct. Video duration in seconds (please find out how long it is), the number of drive slides, title, byline, mapbox styles, access tokens, etc.
@@ -41,7 +42,6 @@ https://parceljs.org/getting_started.html
 ### Step 2: generate driving routes and interview video screenshots along the drive
 2a. Prepare Video Content
 * Add .mp4 video file to `data/` and `dist/` folders (note: only mp4 will work. If you have another format, use ffmpeg to convert)
-* Make sure image file path is correct
 
 2b. Prepare GPS Route Content
 * Make GPX file using Open GPX Tracker ([Apple](https://apps.apple.com/app/open-gpx-tracker/id984503772), [Android](https://play.google.com/store/apps/details?id=net.osmtracker))
@@ -53,7 +53,8 @@ https://parceljs.org/getting_started.html
 
 ### Step 3: Final checks and run
 3a. Update path names in `index.js`
-* Make sure that the copy path (ex. import { chapters, config } from `copy.json`) and video path (ex. vid.src = `./IMG_1234.mp4`) match your data
+* Make sure that the video path (ex. vid.src = `./IMG_1234.mp4`) match your data
+* Make sure that "customized_lowest_layer" variable is set to your lowest customized layer, so that the walking dot and path will show below your customized layers but be above the other map basic layers.
 
 3b. Run project `npm run dev`
 

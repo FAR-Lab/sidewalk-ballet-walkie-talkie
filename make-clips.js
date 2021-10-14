@@ -117,11 +117,11 @@ const chunkArray = (array, size) => {
   return result;
 };
 
-if (!fs.existsSync(`${out}/imgs/`)) {
-  fs.mkdirSync(`${out}/imgs/`);
+if (!fs.existsSync(`${out}imgs/`)) {
+  fs.mkdirSync(`${out}imgs/`);
 }
 console.log('making screenshots, this may take a moment');
 chunkArray(gps_interpolate.features[0].properties.coordTimes, 50).forEach((chunk) => {
   console.log(chunk);
-  makeImgs(chunk, `${out}/imgs/`);
+  makeImgs(chunk, `${out}imgs/`);
 });

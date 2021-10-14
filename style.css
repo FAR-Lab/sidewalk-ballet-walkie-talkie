@@ -6,12 +6,25 @@
   padding-top: 5vh;
 }*/
 
+#legend {
+    position: fixed;
+    /* padding-bottom: 5vh; */
+    /* padding-right: 5vw; */
+    width: 73vw;
+    bottom: 1vw;
+    /* right: -10vw; */
+    left: 61vw;
+}
+#legend > img {
+    height: 15vw;
+    display: block;
+}
 #viewer {
     position: fixed;
     padding-top: 5vh;
     padding-right: 5vw;
-    width: 33vw;
-    left: 75vw;
+    width: 73vw;
+    left: 55vw;
     transition:all 0.3s ease
     /*height: 10vw*/
     /*background-color: red;*/
@@ -126,6 +139,35 @@ a, a:hover, a:visited {
     color: #fafafa;
     background-color: #444;
 }
+.theme_1 {
+    color: #fafafa;
+    background-color: #ff40ff;
+}
+.theme_2 {
+    color: #fafafa;
+    background-color: #d883ff;
+}
+.theme_3 {
+    color: #fafafa;
+    background-color: #0096ff;
+}
+.theme_4 {
+    color: #444;
+    background-color: #76d6ff;
+    /* color: #76d6ff; */
+}
+.theme_5 {
+    color: #444;
+    background-color: #00fa00;
+}
+.theme_6 {
+    color: #444;
+    background-color: #d5fc79;
+}
+/* .street_1 {
+    opacity: 0;
+} */
+
 .step {
     padding-bottom: 50vh;
     /* margin-bottom: 10vh; */
@@ -160,6 +202,9 @@ a, a:hover, a:visited {
 
 .step img {
     width: 100%;
+}
+#icon {
+    width: 50;
 }
 
 @media (max-width: 750px) {
