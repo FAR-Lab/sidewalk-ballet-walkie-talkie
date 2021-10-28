@@ -6,15 +6,24 @@ import routeData from './route.json';
 
 let viewerImg = document.getElementById('viewerImg');
 let vid = document.getElementById('vid');
-vid.src = './resized_IMG_4965.mp4';
+
+// // Make sure to modify this for each layer.
+// vid.src = './GMT20210408-160517_Recording_640x360.mp4';
+
+vid.src = './GMT20201216-141014_Interview-_640x360.mp4';
+// import fs from 'fs';
+// fs.readdirSync('./data/').forEach((file) => {
+//   if (file.endsWith('.mp4')) {
+//     vid.src = `./${file}`;
+//   }
+// });
+
 console.log(vid);
 vid.onplaying = () => { vid.style.opacity = 100 };
 vid.onpause = () => { vid.style.opacity = 0 };
 vid.parentNode.onclick = () => vid.paused ? vid.play() : vid.pause()
 const im_path = './imgs/'
 
-// Make sure to modify this for each layer.
-const customized_lowest_layer = 'nuntinee-theme';
 
 const totalVideoDuration = chapters.reduce((accumulator, chapter) => {
   if (chapter.video) {
@@ -68,6 +77,7 @@ const changeCenter = (index) => {
   // Set center to a subsample of the line, say every 10th or 25th
   const currentJson = geojsonPoint.features[0].geometry.coordinates.slice(0, index);
   viewerImg.src = `${im_path}${imgs[index]}.png`;
+  console.log('changeCenter', index);
   vid.currentTime = imgs[index];
   imgs.slice(index+1, index+10).forEach((img) =>{
     const tempImg = new Image();
@@ -108,7 +118,13 @@ const alignments = {
 };
 
 const getLayerPaintType = (layer) => {
-  const layerType = map.getLayer(layer).type;
+  const gotten_layer = map.getLayer(layer);
+
+  // Google Doc error.
+  if (gotten_layer == null) {
+    return [];
+  }
+  const layerType = gotten_layer.type;
   return layerTypes[layerType];
 };
 
@@ -166,13 +182,22 @@ chapters.forEach((record, idx) => {
     console.log('seconds', seconds);
   }
   
-  // add chapter icon (changes in streetscape icon) if specified.
+  // add chapter icon (changes in streetscape icon) in text if specified.
   if (record.icon) {
     const icon = document.createElement('img');
     icon.setAttribute('id', 'icon')
     icon.setAttribute('src', 'icons/icon-' + record.icon + '.png');
     icon.setAttribute('width', '50');
     // icon.setAttribute('height', '60');
+    chapter.appendChild(icon);
+  }
+
+  // add theme dot (changes in lifestyle circle) if specified.
+  if (record.theme) {
+    const icon = document.createElement('span');
+    icon.setAttribute('id', 'theme-dot');
+    icon.setAttribute('class', 'dot');
+    icon.classList.add('class', 'theme_' + record.theme);
     chapter.appendChild(icon);
   }
   
@@ -186,7 +211,6 @@ chapters.forEach((record, idx) => {
   if (record.image) {
     let image = new Image();
     image.src = record.image;
-    console.log('image created');
     chapter.appendChild(image);
   }
 
@@ -200,7 +224,6 @@ chapters.forEach((record, idx) => {
   if (record.image1) {
     let image1 = new Image();
     image1.src = record.image1;
-    console.log('image 1 created');
     chapter.appendChild(image1);
   }
   if (record.image2) {
@@ -215,17 +238,7 @@ chapters.forEach((record, idx) => {
     container.classList.add('active');
   }
   
-  // chapter.getElementsByClassName('icon-1').opacity = 1;
-  // add chapter theme color (changes in lifestyle color) if specified.
-  // such as theme_1 theme_2 theme_3 etc. Refer to here
-  // https://docs.google.com/document/d/12QbPAxiGRh20ibKLWhLSZ5IvAptPLYuwBznxjBg3fPQ/edit
-  if (record.theme) {
-    chapter.classList.add('theme_' + record.theme);
-
-  // default to the overall config theme.
-  } else {
-    chapter.classList.add(config.theme);
-  }
+  chapter.classList.add(config.theme);
 
   container.appendChild(chapter);
   features.appendChild(container);
@@ -278,10 +291,12 @@ function handleStepProgress(response) {
     console.log("Cur to Next:", curSlideStart, nextSlideStart)
 
     // stepProgress = Math.round(routelen * ((response.progress / config.driveSlides) + (driveSlideNum / config.driveSlides)));
-    stepProgress = (Math.round((nextSlideStart-curSlideStart)*response.progress))+curSlideStart
-    console.log("stepProgress", stepProgress)
-    console.log("responseProgresss", response.progress)
-    changeCenter(stepProgress);
+    stepProgress = (Math.round((nextSlideStart-curSlideStart)*response.progress))+curSlideStart;
+    console.log("stepProgress", stepProgress);
+    console.log("responseProgresss", response.progress);
+    if (stepProgress) {
+      changeCenter(stepProgress);
+    }
 
   }
 }
@@ -312,10 +327,7 @@ map.on('load', () => {
     layout: {
       visibility: 'none',
     },
-
-  // This is the lowest layer in mapbox that is customized by us.
-  // This way the animated line and point will appear below them.
-  }, customized_lowest_layer
+  }
 );
 
   // map.moveLayer('animatedLine');
@@ -332,10 +344,7 @@ map.on('load', () => {
     layout: {
       // 'visibility': 'none'
     },
-
-  // This is the lowest layer in mapbox that is customized by us.
-  // This way the animated line and point will appear below them.
-  }, customized_lowest_layer
+  }
 );
 
   // setup the instance, pass callback functions
@@ -351,6 +360,26 @@ map.on('load', () => {
       if ('location' in chapter) {
         map.flyTo(chapter.location);
       }
+
+      // Displays theme point map layer.
+      if (chapter.theme) {
+        const layer = {
+          'layer': 'themeSymbol' + chapter.id,
+          'opacity': 1,
+        };
+        setLayerOpacity(layer);
+      }
+
+      // Displays icon map layer.
+      if (chapter.icon) {
+        const layer = {
+          'layer': 'iconSymbol' + chapter.id,
+          'opacity': 1,
+        };
+        setLayerOpacity(layer);
+      }
+
+      // Sets user specified layer display.
       if ('onChapterEnter' in chapter) {
         chapter.onChapterEnter.forEach(setLayerOpacity);
       }
@@ -369,6 +398,83 @@ map.on('load', () => {
     })
     .onStepProgress(handleStepProgress);
   createLine();
+
+
+
+  chapters.forEach((record, idx) => {
+    
+    if (record.theme) {
+      const center = geojsonPoint.features[0].geometry.coordinates[record.videoSeconds];
+      
+      map.addSource('theme-symbol-' + record.id, {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [
+              {
+              type: 'Feature',
+              geometry: {
+              type: 'Point',
+              coordinates: center,
+              }
+            }
+          ]
+        }
+      });
+          
+      const theme_colors = ['Not used', 
+                            '#ff40ff', 'd883ff', '#0096ff', 
+                            '#76d6ff', '#00fa00', '#d5fc79'];
+      map.addLayer({
+          id: 'themeSymbol' + record.id,
+          type: 'circle',
+          source: 'theme-symbol-' + record.id,
+          paint: {
+            'circle-radius': 10.5,
+            'circle-opacity': 0.1,
+            'circle-color': theme_colors[parseInt(record.theme)],
+          },
+        }
+      );
+    }
+
+    if (record.icon) {
+      const center = geojsonPoint.features[0].geometry.coordinates[record.videoSeconds];
+      // icon.setAttribute('src', 'icons/icon-' + record.icon + '.png');
+
+      map.addSource('icon-symbol-' + record.id, {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [
+              {
+              type: 'Feature',
+              geometry: {
+              type: 'Point',
+              coordinates: [center[0], center[1] + 0.0005, center[2]],
+              }
+            }
+          ]
+        }
+      });
+      
+      map.addLayer({
+          id: 'iconSymbol' + record.id,
+          type: 'symbol',
+          source: 'icon-symbol-' + record.id,
+          'layout': {
+
+            // This image source should be available on the mapbox base map.
+            'icon-image': record.icon,
+            'icon-size': .3,
+          },
+          paint: {
+            'icon-opacity': 0.1,
+          },
+        }
+      );
+    }
+  });
 });
 
 // setup resize event

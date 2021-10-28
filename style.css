@@ -140,30 +140,32 @@ a, a:hover, a:visited {
     background-color: #444;
 }
 .theme_1 {
-    color: #fafafa;
     background-color: #ff40ff;
 }
 .theme_2 {
-    color: #fafafa;
     background-color: #d883ff;
 }
 .theme_3 {
-    color: #fafafa;
     background-color: #0096ff;
 }
 .theme_4 {
-    color: #444;
     background-color: #76d6ff;
-    /* color: #76d6ff; */
 }
 .theme_5 {
-    color: #444;
     background-color: #00fa00;
 }
 .theme_6 {
-    color: #444;
     background-color: #d5fc79;
 }
+
+#theme-dot {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+
 /* .street_1 {
     opacity: 0;
 } */

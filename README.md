@@ -36,7 +36,7 @@ https://parceljs.org/getting_started.html
 
 1c. Prepare config and execute
 * Make sure that the configs at the end of the Google Doc is correct. Video duration in seconds (please find out how long it is), the number of drive slides, title, byline, mapbox styles, access tokens, etc.
-* Fill in `id` and `filepath` parameters in `doc.json`(id: the Google Doc document ID between "d/" and "/edit" in the link, filepath: path for your destination copy content; and make sure the doc is shared publicly)
+* Fill in `id` parameters in `doc.json` (id: the Google Doc document ID between "d/" and "/edit" in the link, filepath: path for your destination copy content; and make sure the doc is shared publicly)
 * Run `npm run doc` to execute `fetch-doc.js` which will pull Google Doc content into your copy filepath
 
 ### Step 2: generate driving routes and interview video screenshots along the drive
@@ -52,9 +52,5 @@ https://parceljs.org/getting_started.html
 * This will create `routes.json` for the walking point/line and image clips in the `imgs` folder for the flipbook
 
 ### Step 3: Final checks and run
-3a. Update path names in `index.js`
-* Make sure that the video path (ex. vid.src = `./IMG_1234.mp4`) match your data
-* Make sure that "customized_lowest_layer" variable is set to your lowest customized layer, so that the walking dot and path will show below your customized layers but be above the other map basic layers.
-
-3b. Run project `npm run dev`
+3. Run project `npm run dev`
 
