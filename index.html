@@ -10,13 +10,13 @@
     </head>
 <body>
 <div id="viewer">
-	<img id="viewerImg" src="">
-		<video id="vid" preload="auto" src=""></video>
-
+	<img id="viewerImg" style="display:block" src=""></img>
+	<video id="vid" preload="auto" src=""></video>
 </div>
 <div id="map"></div>
-<div id="legend">
-    <button onclick="toggleLegendView()">Legend</button>
+<div id="sidebar">
+    <button onclick="toggleLegendView()">Hide/Show Legend</button>
+    <a href="https://www.socialdistancing.tech.cornell.edu/copy-of-what-is-a-walkie-talkie"><button >Back to Main Map</button></a>
     <div></div>
     <img id="legendimg" src="https://raw.githubusercontent.com/HarrisonJYU/Sidewalk-Ballet/521979f9d581e658f547c2f404112597f05b9f57/photo/legend.svg" />
 </div>

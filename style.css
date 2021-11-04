@@ -6,7 +6,7 @@
   padding-top: 5vh;
 }*/
 
-#legend {
+#sidebar {
     position: fixed;
     /* padding-bottom: 5vh; */
     /* padding-right: 5vw; */
@@ -15,7 +15,7 @@
     /* right: -10vw; */
     left: 61vw;
 }
-#legend > img {
+#sidebar > img {
     height: 15vw;
     display: block;
 }

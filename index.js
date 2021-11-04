@@ -275,7 +275,8 @@ function handleStepProgress(response) {
     const driveSlideNum = parseInt(response.element.id.slice(-1), 10);
 
     if (driveSlideNum === 0) {
-      viewerImg.style.display = "block"
+      // Set video screenshot visible only at the start of the drive slides.
+      // viewerImg.style.display = "block"
       map.setLayoutProperty('animatedLine', 'visibility', 'visible');
     }
 
@@ -423,7 +424,7 @@ map.on('load', () => {
       });
           
       const theme_colors = ['Not used', 
-                            '#ff40ff', 'd883ff', '#0096ff', 
+                            '#ff40ff', '#d883ff', '#0096ff', 
                             '#76d6ff', '#00fa00', '#d5fc79'];
       map.addLayer({
           id: 'themeSymbol' + record.id,

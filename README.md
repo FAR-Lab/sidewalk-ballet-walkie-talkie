@@ -11,7 +11,7 @@ Please familiarize yourself with Mapbox's template documentation [here](https://
 https://parceljs.org/getting_started.html
 * clone repo
 * `npm install` (`npm audit fix` if needed)
-* for dev `parcel index.html`
+* for dev `parcel index.html` (Deprecated, use `npm run dev` instead, see below)
 
 ## Making a Walkie Talkie
 
@@ -36,7 +36,7 @@ https://parceljs.org/getting_started.html
 
 1c. Prepare config and execute
 * Make sure that the configs at the end of the Google Doc is correct. Video duration in seconds (please find out how long it is), the number of drive slides, title, byline, mapbox styles, access tokens, etc.
-* Fill in `id` parameters in `doc.json` (id: the Google Doc document ID between "d/" and "/edit" in the link, filepath: path for your destination copy content; and make sure the doc is shared publicly)
+* Fill in `id` and `videoName` parameters in `doc.json` (id: the Google Doc document ID between "d/" and "/edit" in the link, filepath: path for your destination copy content; and make sure the doc is shared publicly)
 * Run `npm run doc` to execute `fetch-doc.js` which will pull Google Doc content into your copy filepath
 
 ### Step 2: generate driving routes and interview video screenshots along the drive
@@ -52,5 +52,7 @@ https://parceljs.org/getting_started.html
 * This will create `routes.json` for the walking point/line and image clips in the `imgs` folder for the flipbook
 
 ### Step 3: Final checks and run
-3. Run project `npm run dev`
+3a. Modify `index.html` title html on line 5 to for example `Walkie Talkie 18 John`
+
+3b. Run project `npm run dev`
 
