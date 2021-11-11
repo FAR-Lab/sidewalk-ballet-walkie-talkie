@@ -90,7 +90,11 @@ const changeCenter = (index) => {
   const currentJson = geojsonPoint.features[0].geometry.coordinates.slice(0, index);
   viewerImg.src = `${im_path}${imgs[index]}.png`;
   console.log('changeCenter', index);
+
+  // The video does not load when user is scrolling.
   vid.currentTime = imgs[index];
+  loadingvideoText.style.opacity = 0;
+
   imgs.slice(index+1, index+10).forEach((img) =>{
     const tempImg = new Image();
     tempImg.src = `${im_path}${img}.png`
