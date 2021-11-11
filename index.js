@@ -6,7 +6,7 @@ import routeData from './route.json';
 
 let viewerImg = document.getElementById('viewerImg');
 let vid = document.getElementById('vid');
-
+let loadingvideoText = document.getElementById('loadingvideo');
 // // Make sure to modify this for each layer.
 // vid.src = './GMT20210408-160517_Recording_640x360.mp4';
 
@@ -19,9 +19,21 @@ vid.src = './GMT20201216-141014_Interview-_640x360.mp4';
 // });
 
 console.log(vid);
-vid.onplaying = () => { vid.style.opacity = 100 };
-vid.onpause = () => { vid.style.opacity = 0 };
-vid.parentNode.onclick = () => vid.paused ? vid.play() : vid.pause()
+vid.onplaying = () => {
+  console.log('onplaying! ' + vid.currentTime);
+  loadingvideoText.style.opacity = 0;
+};
+
+vid.parentNode.onclick = () => {
+  if (vid.paused) {
+    vid.style.opacity = 100;
+    loadingvideoText.style.opacity = 100;
+    return vid.play();
+  } else {
+    loadingvideoText.style.opacity = 0;
+    return vid.pause();
+  }
+}
 const im_path = './imgs/'
 
 
