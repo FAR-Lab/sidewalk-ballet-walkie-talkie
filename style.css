@@ -78,9 +78,9 @@ body {
     font-family: sans-serif;
     width: 0;
 }
-a, a:hover, a:visited {
+/* a, a:hover, a:visited {
     color: lightblue;
-}
+} */
 #map {
     top:0;
     height: 100vh;
