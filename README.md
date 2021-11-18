@@ -34,7 +34,10 @@ https://parceljs.org/getting_started.html
 * Follow guidance to create your own "style" on Mapbox on either given data, your created data, or your uploaded data (dataset or tileset), e.g. [.onChapterEnter] layer: park-slope opacity: 1
 * customized_lowest_layer
 
-1c. Prepare config and execute
+1c. Prepare folders
+Create `data`, `dist`, `static` folders. Copy the `icon` folder into the `static` folder.
+
+1d. Prepare config and execute
 * Make sure that the configs at the end of the Google Doc is correct. Video duration in seconds (please find out how long it is), the number of drive slides, title, byline, mapbox styles, access tokens, etc.
 * Fill in `id` parameter in `doc.json` (id: the Google Doc document ID between "d/" and "/edit" in the link, filepath: path for your destination copy content; and make sure the doc is shared publicly)
 * Run `npm run doc` to execute `fetch-doc.js` which will pull Google Doc content into your copy filepath
@@ -54,5 +57,7 @@ https://parceljs.org/getting_started.html
 ### Step 3: Final checks and run
 3a. Modify `index.html` title html on line 5 to for example `Walkie Talkie 18 John`
 
-3b. Run project `npm run dev`
+3b. Modify `index.js` on line 13 the vid.src to the video file name
+
+3c. Run project `npm run dev`
 
