@@ -18,6 +18,21 @@ vid.src = './GMT20201216-141014_Interview-_640x360.mp4';
 //   }
 // });
 
+
+const data_layers_active = true;
+// first is the layer name, second is the opacity if it were to be displayed.
+const icon_data_layers = {
+  1: ['sidewalk-width', 0.6],
+  2: ['loan-grant', 0.6],
+  // 4: 'parks-closure',
+  5: ['open-restaurant', 1],
+  6: ['garbage-weight-change', 0.6],
+}
+const theme_data_layers = {
+  1: ['cultural-institution', 1],
+  6: ['rent-burden', 0.6]
+}
+
 console.log(vid);
 vid.onplaying = () => {
   console.log('onplaying! ' + vid.currentTime);
@@ -233,6 +248,15 @@ chapters.forEach((record, idx) => {
   if (record.description) {
     const story = document.createElement('p');
     story.innerHTML = record.description;
+
+    if (data_layers_active && record.icon && record.icon in icon_data_layers) {
+      story.innerHTML = story.innerHTML + '<br>Now you can see a layer regarding to ' 
+      + icon_data_layers[record.icon][0] + ' on the right.';
+    }
+    if (data_layers_active && record.theme && record.theme in theme_data_layers) {
+      story.innerHTML = story.innerHTML + '<br>Now you can see a layer regarding to ' 
+      + theme_data_layers[record.theme][0] + ' on the right.';
+    }
     chapter.appendChild(story);
   }
 
@@ -344,8 +368,7 @@ map.on('load', () => {
     layout: {
       visibility: 'none',
     },
-  }
-);
+  });
 
   // map.moveLayer('animatedLine');
 
@@ -361,8 +384,30 @@ map.on('load', () => {
     layout: {
       // 'visibility': 'none'
     },
+  });
+
+  // Do not display data the layers on entry.
+  for (const [key, value] of Object.entries(icon_data_layers)) {
+
+    const layer = {
+      'layer': value[0],
+      'opacity': 0,
+    };
+    console.log('forEach icon_data_layers arr', value);
+    console.log(layer);
+    setLayerOpacity(layer);
   }
-);
+
+  for (const [key, value] of Object.entries(theme_data_layers)) {
+
+    const layer = {
+      'layer': value[0],
+      'opacity': 0,
+    };
+    // console.log('forEach icon_data_layers arr', value);
+    // console.log(layer);
+    setLayerOpacity(layer);
+  }
 
   // setup the instance, pass callback functions
   scroller
@@ -396,6 +441,26 @@ map.on('load', () => {
         setLayerOpacity(layer);
       }
 
+      // Displays theme data map layer.
+      if (data_layers_active && chapter.theme && chapter.theme in theme_data_layers) {
+
+        const layer = {
+          'layer': theme_data_layers[chapter.theme][0],
+          'opacity': theme_data_layers[chapter.theme][1],
+        };
+        setLayerOpacity(layer);
+      }
+
+      // Displays icon data map layer.
+      if (data_layers_active && chapter.icon && chapter.icon in icon_data_layers) {
+        const layer = {
+          'layer': icon_data_layers[chapter.icon][0],
+          'opacity': icon_data_layers[chapter.icon][1],
+        };
+        console.log('layer' + icon_data_layers[chapter.icon]);
+        setLayerOpacity(layer);
+      }
+
       // Sets user specified layer display.
       if ('onChapterEnter' in chapter) {
         chapter.onChapterEnter.forEach(setLayerOpacity);
@@ -410,6 +475,24 @@ map.on('load', () => {
       response.element.classList.remove('active');
       if ('onChapterExit' in chapter) {
         chapter.onChapterExit.forEach(setLayerOpacity);
+      }
+
+      // Hides theme data map layer.
+      if (data_layers_active && chapter.theme && chapter.theme in theme_data_layers) {
+        const layer = {
+          'layer': theme_data_layers[chapter.theme][0],
+          'opacity': 0,
+        };
+        setLayerOpacity(layer);
+      }
+
+      // Hides icon data map layer.
+      if (data_layers_active && chapter.icon && chapter.icon in icon_data_layers) {
+        const layer = {
+          'layer': icon_data_layers[chapter.icon][0],
+          'opacity': 0,
+        };
+        setLayerOpacity(layer);
       }
 
     })
