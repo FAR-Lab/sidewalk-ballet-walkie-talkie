@@ -565,8 +565,8 @@ map.on('load', () => {
           'layout': {
 
             // This image source should be available on the mapbox base map.
-            'icon-image': record.icon,
-            'icon-size': .3,
+            'icon-image': 'icon-' + record.icon,
+            'icon-size': .1,
           },
           paint: {
             'icon-opacity': 0.1,
