@@ -35,7 +35,7 @@ https://parceljs.org/getting_started.html
 * customized_lowest_layer
 
 1c. Prepare folders
-Create `data`, `dist`, `static` folders. Copy the `icon` folder into the `static` folder.
+Create `data`, `dist`, `static` folders. Copy the `icons` folder into the `static` folder.
 
 1d. Prepare config and execute
 * Make sure that the configs at the end of the Google Doc is correct. Video duration in seconds (please find out how long it is), the number of drive slides, title, byline, mapbox styles, access tokens, etc.
