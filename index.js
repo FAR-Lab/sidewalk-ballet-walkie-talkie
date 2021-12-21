@@ -107,7 +107,13 @@ const changeCenter = (index) => {
   console.log('changeCenter', index);
 
   // The video does not load when user is scrolling.
-  vid.currentTime = imgs[index];
+  if (parseInt(index) && parseInt(index) < imgs.length) {
+    vid.currentTime = imgs[index];
+    } else {
+      console.log('[ERROR] changeCenter input index is not integer');
+      console.log('[ERROR] we want to change the center to a specific image/video location');
+    }
+  
   loadingvideoText.style.opacity = 0;
 
   imgs.slice(index+1, index+10).forEach((img) =>{
@@ -213,6 +219,20 @@ chapters.forEach((record, idx) => {
     console.log('seconds', seconds);
   }
   
+  // A hack is added here in case if videoSeconds is also in a 00:00:00 format.
+  if (record.videoSeconds && ! parseInt(record.videoSeconds)) {
+
+    console.log('hack', record.videoSeconds);
+
+    let splitted = record.videoSeconds.split(':');
+    let seconds = 0;
+    for (let i = 0; i < splitted.length; i++) {
+      seconds = seconds * 60 + parseInt(splitted[i]);
+    }
+    record.videoSeconds = seconds.toString();
+    console.log('seconds', seconds);
+  }
+
   // add chapter icon (changes in streetscape icon) in text if specified.
   if (record.icon) {
     const icon = document.createElement('img');
@@ -250,12 +270,12 @@ chapters.forEach((record, idx) => {
     story.innerHTML = record.description;
 
     if (data_layers_active && record.icon && record.icon in icon_data_layers) {
-      story.innerHTML = story.innerHTML + '<br>Now you can see a layer regarding to ' 
-      + icon_data_layers[record.icon][0] + ' on the right.';
+      story.innerHTML = story.innerHTML + '<br><b>Now you can see a layer regarding to ' 
+      + icon_data_layers[record.icon][0] + ' on the right.</b>';
     }
     if (data_layers_active && record.theme && record.theme in theme_data_layers) {
-      story.innerHTML = story.innerHTML + '<br>Now you can see a layer regarding to ' 
-      + theme_data_layers[record.theme][0] + ' on the right.';
+      story.innerHTML = story.innerHTML + '<br><b>Now you can see a layer regarding to ' 
+      + theme_data_layers[record.theme][0] + ' on the right.</b>';
     }
     chapter.appendChild(story);
   }
@@ -446,7 +466,7 @@ map.on('load', () => {
 
         const layer = {
           'layer': theme_data_layers[chapter.theme][0],
-          'opacity': theme_data_layers[chapter.theme][1],
+          'opacity': parseFloat(theme_data_layers[chapter.theme][1]),
         };
         setLayerOpacity(layer);
       }
@@ -455,7 +475,7 @@ map.on('load', () => {
       if (data_layers_active && chapter.icon && chapter.icon in icon_data_layers) {
         const layer = {
           'layer': icon_data_layers[chapter.icon][0],
-          'opacity': icon_data_layers[chapter.icon][1],
+          'opacity': parseFloat(icon_data_layers[chapter.icon][1]),
         };
         console.log('layer' + icon_data_layers[chapter.icon]);
         setLayerOpacity(layer);
