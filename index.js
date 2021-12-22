@@ -585,7 +585,7 @@ map.on('load', () => {
           'layout': {
 
             // This image source should be available on the mapbox base map.
-            'icon-image': 'icon-' + record.icon,
+            'icon-image': 'Icon-' + record.icon, // The I is capitalized on mapbox. 
             'icon-size': .1,
           },
           paint: {
